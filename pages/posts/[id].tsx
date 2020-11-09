@@ -5,6 +5,7 @@ import utilStyles from '../../styles/utils.module.css'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { getAllPostIds, getPostData } from '../../lib/posts'
 
+/*
 export async function getStaticPaths():GetStaticPaths {
   const paths = getAllPostIds()
   return {
@@ -21,8 +22,36 @@ export async function getStaticProps({ params }):GetStaticProps {
     }
   }
 }
+*/
 
-export default function Post({ postData }) {
+export const getStaticPaths: GetStaticPaths = async () => {
+  const paths = getAllPostIds()
+  return {
+    paths,
+    fallback: false
+  }
+}
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const postData = await getPostData(params.id as string)
+  return {
+    props: {
+      postData
+    }
+  }
+}
+
+
+
+export default function Post(
+  { postData } : {
+    postData: {
+      title: string
+      date: string
+      contentHtml: string
+    }
+  }
+  ) {
   return (
     <Layout>
       <Head>
