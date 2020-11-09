@@ -5,7 +5,10 @@ import Link from 'next/link'
 import Date from '../components/date'
 import utilStyles from '../styles/utils.module.css'
 
-export async function getStaticProps() {
+import { GetStaticProps } from 'next'
+
+//export async function getStaticProps():GetStaticPaths {
+export const getStaticProps: GetStaticProps = async context => {  
   const allPostsData = getSortedPostsData()
   return {
     props: {
