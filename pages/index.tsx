@@ -7,22 +7,53 @@ import utilStyles from '../styles/utils.module.css'
 
 import { GetStaticProps } from 'next'
 
+import { connectToDatabase } from '../util/mongodb'
+
+
 //export async function getStaticProps():GetStaticPaths {
+//export const getStaticProps: GetStaticProps = async context => {  
+/*  
 export const getStaticProps: GetStaticProps = async context => {  
   const allPostsData = getSortedPostsData()
+ 
   return {
     props: {
       allPostsData
     }
   }
 }
+*/
 
-export default function Home({ allPostsData }) {
+export async function getServerSideProps(context) {
+  const { client } = await connectToDatabase()
+
+  const isConnected = await client.isConnected() // Returns true or false
+  const allPostsData = getSortedPostsData()
+  return {
+    props: { 
+      isConnected,
+      allPostsData
+    },
+
+  }
+}
+
+export default function Home({ allPostsData, isConnected }) {
   return (
     <Layout home>
       <Head>
         <title>{siteTitle}</title>
       </Head>
+      <div>
+      {isConnected ? (
+          <h2 className="subtitle">You are connected to MongoDB</h2>
+        ) : (
+          <h2 className="subtitle">
+            You are NOT connected to MongoDB. Check the <code>README.md</code>{' '}
+            for instructions.
+          </h2>
+        )}        
+      </div>
       <section className={utilStyles.headingMd}>
         <p>Hello I'm Ralf - a fullstack developer.</p>
         <p>

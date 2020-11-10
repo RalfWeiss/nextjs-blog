@@ -2,6 +2,7 @@ import Head from 'next/head'
 import styles from './layout.module.css'
 import utilStyles from '../styles/utils.module.css'
 import Link from 'next/link'
+import { Button } from 'evergreen-ui'
 
 const name = 'Ralf Weiss'
 export const siteTitle = 'Next.js Sample Website'
@@ -63,6 +64,7 @@ export default function Layout(
           </Link>
         </div>
       )}
+      <Button>Evergreen-Button</Button>
     </div>
   )
 }
